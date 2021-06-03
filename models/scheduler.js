@@ -327,7 +327,7 @@ const scheduler = {
 	*/
 	changeColor : async function(period, prevColor, color) {
 		try {
-			const isExsist = await this.checkColor(period, color);
+			const isExists = await this.checkColor(period, color);
 			if (isExists)
 				return false;
 			
@@ -355,9 +355,15 @@ const scheduler = {
 	*
 	*/
 	checkColor : async function(period, color) {
-		const sql = "SELECT COUNT(*) as cnt FROM schedule WHERE period = ? AND color = ?";
+		period = period.split("_");
+		const sDate = new Date(Number(period[0]));
+		const eDate = new Date(Number(period[1]));
+		
+		const sql = "SELECT COUNT(*) as cnt FROM schedule WHERE scheduleDate BETWEEN :sDate AND :edate AND color = :color";
+		const replacements = { sDate, eDate, color };
+		
 		const rows = await sequelize.query(sql, {
-			replacements : [period, color],
+			replacements, 
 			type : QueryTypes.SELECT,
 		});
 		

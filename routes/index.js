@@ -38,7 +38,7 @@ router.route('/schedule')
 		.patch(async (req, res, next) => {
 			const result = await scheduler.changeColor(req.body.period, req.body.prevColor, req.body.color);
 			
-			return res.send("");
+			return res.json({success : result});
 		})
 		/** 스케줄 삭제 */
 		.delete(async (req, res, next) => {
