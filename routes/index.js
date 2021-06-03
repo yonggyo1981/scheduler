@@ -58,6 +58,7 @@ router.get("/schedule/:period/:color", async (req, res, next) => {
 	
 	let date = "";
 	let stamp = 0;
+	const info = await scheduler.getInfo(req.params.period, req.params.color);
 	const data = {
 		stamp,
 		colors : Object.keys(scheduler.getColors()),

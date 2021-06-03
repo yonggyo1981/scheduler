@@ -286,6 +286,32 @@ const scheduler = {
 			return false;
 		}
 	},
+	/**
+	* 스케줄 수정 정보 
+	*
+	*/
+	getInfo : async function (period, color) {
+		const sql = 'SELECT title FROM schedule WHERE period = ? AND color = ? LIMIT 1';
+		const rows = await sequelize.query(sql, {
+			replacements : [period, color],
+			type : QueryTypes.SELECT,
+		});
+		
+		if (rows.length == 0) 
+			return {};
+		
+		const periods = period.split("_");
+		const startDate = this.getDate(periods[0]);
+		const endDate = this.getDate(periods[1]);
+		const data = {
+			startDate,
+			endDate,
+			title : rows[0].title,
+			color,
+		}
+		
+		return data;
+	},
 };
 
 
