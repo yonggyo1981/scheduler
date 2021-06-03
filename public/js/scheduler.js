@@ -10,8 +10,21 @@ $(function() {
 		const stamp = $(this).closest(".day").data("stamp");
 		const color = $(this).data("color");
 		url = `/schedule/view/${stamp}/${color}`;
-		console.log(url);
 		yh.layer.popup(url, 400, 350);
+	});
+	
+	/** 스케줄 삭제 */
+	$("body").on("click", ".schedule_view .delete", function() {
+		const period = $(this).closest(".schedule_view").data("period");
+		const url = "/schedule",
+		
+		axios.delete(url)
+			.then(function(res) {
+				console.log(res);
+			})
+			.catch(function(err) {
+				console.error(err);
+			});
 	});
 	
 	/** 스케줄 저장 */
