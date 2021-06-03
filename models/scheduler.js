@@ -72,7 +72,7 @@ const scheduler = {
 		}
 		
 		/** 스케줄 조회 S */
-		const schedules = this.get(days[0].object, days[days.length - 1].object);
+		const schedules = await this.get(days[0].object, days[days.length - 1].object);
 		
 		/** 스케줄 조회 E */
 		
@@ -186,15 +186,16 @@ const scheduler = {
 			replacements : [sdate, edate],
 			type : QueryTypes.SELECT,
 		});
-		/*
+		
 		const list = {};
-		rows.forEach( async (v) => {
-			let scheduleDate = "S" + v.scheduleDate.replace(/-/g, '');
-			list[scheduleDate][v.color] = list[scheduleDate][v.color] || [];
-			list[scheduleDate][v.color].push(v);
+		rows.forEach( async(v) => {
+			let key = "S" + v.scheduleDate.replace(/-/g, "");
+			key += "_" + v.color.replace(/#/g, "");
+			list[key] = list[key] || [];
+			list[key].push(v);
 		});
-		console.log(list);
-		*/
+		
+		return list;
 	}
 };
 
