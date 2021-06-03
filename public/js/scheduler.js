@@ -145,10 +145,32 @@ $(function() {
 	/** 오늘 스케줄 확인 처리 */
 	$("body").on("click", ".today_list .confirm", function() {
 		$list = $(".today_list input[type='checkbox']:checked");
+		
+		if ($list.length == 0) {
+			alert("확인할 스케줄을 선택하세요.");
+			return;
+		}
+		
+		if (!confirm('정말 확인처리 하시겠습니까?')) {
+			return;
+		}
+		
 		const isChecked = [];
 		$.each($list, function() {
 			isChecked.push($(this).val());
 		});
+		
+		axios.patch("/schedule/today", { isChecked })
+				.then(function(res) {
+					if (res.data.success) { // 성공
+						location.reload();
+					} else { // 실패 
+						alert("확인 처리 실패하였습니다.");
+					}
+				})
+				.catch(function(err) {
+					console.error(err);
+				});
 	});
 	
 	

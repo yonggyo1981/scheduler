@@ -400,6 +400,36 @@ const scheduler = {
 			return [];
 		}
 	},
+	/**
+	* 오늘 스케줄 확인 처리 
+	*
+	*/
+	confirmTodaySchedule : async function(colors) {
+		if (!colors) 
+			return false;
+		
+		try {
+			const date = new Date();
+			const today = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+			colors.forEach(async (color) => {
+				const sql = `UPDATE schedule 
+										SET 
+											isChecked = 1 
+									WHERE 
+											scheduleDate = ? AND color = ?`;
+				await sequelize.query(sql, {
+					replacements : [today, color],
+					type : QueryTypes.UPDATE,
+				});
+			});
+			
+			return true;
+		} catch (err) {
+			logger(err.message, 'error');
+			logger(err.stack, 'error');
+			return false;
+		}
+	},
 };
 
 

@@ -67,9 +67,15 @@ router.get("/schedule/:period/:color", async (req, res, next) => {
 });
 
 /** 오늘 스케줄 확인 */
-router.get("/schedule/today", async (req, res, next) => {
-	const list = await scheduler.getTodaySchedules();
-	return res.render("today", { list });
-});
+router.route("/schedule/today")
+		.get(async (req, res, next) => {
+			const list = await scheduler.getTodaySchedules();
+			return res.render("today", { list });
+		})
+		.patch(async (req, res, next) => {
+			const result = await scheduler.confirmTodaySchedule(req.body.isChecked);
+			
+			return res.json({ success : result });
+		});
 
 module.exports = router;
