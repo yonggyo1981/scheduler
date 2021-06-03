@@ -55,15 +55,9 @@ router.get("/schedule/view/:stamp/:color", async (req, res, next) => {
 
 /** 스케줄 수정 */
 router.get("/schedule/:period/:color", async (req, res, next) => {
-	
-	let date = "";
-	let stamp = 0;
-	const info = await scheduler.getInfo(req.params.period, req.params.color);
-	const data = {
-		stamp,
-		colors : Object.keys(scheduler.getColors()),
-		date,
-	};
+	const data = await scheduler.getInfo(req.params.period, req.params.color);
+	data.period = req.params.period;
+	data.colors =  Object.keys(scheduler.getColors());
 	
 	return res.render("form", data);
 });

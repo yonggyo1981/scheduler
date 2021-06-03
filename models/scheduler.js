@@ -168,6 +168,14 @@ const scheduler = {
 		const period = startStamp + "_" + endStamp;
 		
 		try {
+			if (params.prevColor) {
+				const sql = "DELETE FROM schedule WHERE period = :period AND color = :color";
+				await sequelize.query(sql, {
+					replacements : { period : params.prevPeriod, color: params.prevColor },
+					type : QueryTypes.DELETE,
+				});
+			}
+			
 			for (let i = startStamp; i <= endStamp; i += step) {
 				const sql = `INSERT INTO schedule (scheduleDate, title, color, period) 
 										VALUES (:scheduleDate, :title, :color, :period)`;
@@ -304,6 +312,7 @@ const scheduler = {
 		const startDate = this.getDate(periods[0]);
 		const endDate = this.getDate(periods[1]);
 		const data = {
+			stamp : Number(periods[0]),
 			startDate,
 			endDate,
 			title : rows[0].title,
