@@ -45,7 +45,8 @@ router.route('/schedule')
 /** 스케줄 조회 */
 router.get("/schedule/view/:stamp/:color", async (req, res, next) => {
 	const data = await scheduler.getSchedule(req.params.stamp, req.params.color);
-	console.log(data);
-	return res.send("");
+	data.colors = Object.keys(schedule.getColors());
+	
+	return res.render("view", data);
 });
 module.exports = router;

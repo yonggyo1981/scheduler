@@ -220,7 +220,7 @@ const scheduler = {
 	* unixtimestamp -> 날짜 형식 
 	*
 	*/
-	getDate : function (stamp) {
+	getDate : function (stamp, mode) {
 		const date = new Date(Number(stamp));
 		const year = date.getFullYear();
 		let month = date.getMonth() + 1;
@@ -228,7 +228,14 @@ const scheduler = {
 		let day = date.getDate();
 		day = (day < 10)?"0"+day:day;
 		
-		return `${year}.${month}.${day}`;
+		if (mode == 'period') {
+			const yoils = this.getYoils();
+			const yoil = date.getDay();
+			
+			return `${Number(month)}월 ${Number(day)}일 ${yoils[yoil]}요일`;
+		} else{
+			return `${year}.${month}.${day}`;
+		}
 	},
 	/**
 	* 스케줄 조회
@@ -248,9 +255,9 @@ const scheduler = {
 				const period = rows.period.split("_");
 				const startDate = this.getDate(period[0], 'period');
 				const endDate = this.getDate(period[1], 'period');
-				
-				
+				rows.periodStr = startDate + " ~ " + endDate;				
 			}
+			
 			return rows;
 		} catch (err) {
 			logger(err.message, 'error');
