@@ -7,6 +7,10 @@ $(function() {
 	
 	/** 스케줄 조회, 삭제 */
 	$(".scheduler .schedule").click(function() {
+		if ($(this).hasClass("none")) {
+			return;
+		}
+		
 		const stamp = $(this).closest(".day").data("stamp");
 		const color = $(this).data("color");
 		url = `/schedule/view/${stamp}/${color}`;
