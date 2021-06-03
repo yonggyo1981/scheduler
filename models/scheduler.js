@@ -49,14 +49,13 @@ const scheduler = {
 			newDay = (newDay < 10)?"0"+newDay:newDay;
 			
 			const str = `${newYear}.${newMonth}.${newDay}`;
-			const stamp = parseInt(newStamp / 1000); // 1초 단위 unix time
 			
 			days.push({
 				'date' : str, // 2020.07.20
 				'day' : newDay, // 01, 02 
 				'yoil' :  this.getYoil(newStamp), // 한글 요일 
 				'yoilEn' : this.getYoil(newStamp, 'en'), // 영문 요일 
-				'stamp' : stamp, // 1초 단위 unix timestamp
+				'stamp' : newStamp,
 				'object' : date,
 			});
 		} // endfor 
@@ -65,7 +64,8 @@ const scheduler = {
 		
 		/** 스케줄 조회 S */
 		const schedules= await this.get(days[0].object, days[days.length - 1].object);
-		const colors = this.getColors().keys();
+		const colors = Object.keys(this.getColors());
+		
 		days.forEach((v, i, _days) => {
 			let isContinue = true;
 			if (i >= 35) {
@@ -166,16 +166,18 @@ const scheduler = {
 		const endStamp = new Date(endDate[0], Number(endDate[1]) -1, endDate[2]).getTime();
 
 		const step = 60 * 60 * 24 * 1000;
+		const period = startStamp + "_" + endStamp;
 		
 		try {
 			for (let i = startStamp; i <= endStamp; i += step) {
-				const sql = `INSERT INTO schedule (scheduleDate, title, color) 
-										VALUES (:scheduleDate, :title, :color)`;
+				const sql = `INSERT INTO schedule (scheduleDate, title, color, period) 
+										VALUES (:scheduleDate, :title, :color, :period)`;
 				
 				const replacements = {
 					scheduleDate : new Date(i),
 					title : params.title,
 					color : params.color,
+					period,
 				};
 				await sequelize.query(sql, {
 					replacements,
@@ -213,6 +215,48 @@ const scheduler = {
 		});
 		
 		return list;
+	},
+	/**
+	* unixtimestamp -> 날짜 형식 
+	*
+	*/
+	getDate : function (stamp) {
+		const date = new Date(Number(stamp));
+		const year = date.getFullYear();
+		let month = date.getMonth() + 1;
+		month = (month < 10)?"0"+month:month;
+		let day = date.getDate();
+		day = (day < 10)?"0"+day:day;
+		
+		return `${year}.${month}.${day}`;
+	},
+	/**
+	* 스케줄 조회
+	*
+	*/
+	getSchedule : async function(stamp, color) {
+		try {
+			const sql = "SELECT * FROM schedule WHERE scheduleDate = ? AND color = ?";
+			let rows = await sequelize.query(sql, {
+				replacements : [new Date(Number(stamp)), color],
+				type : QueryTypes.SELECT,
+			});
+			
+			rows = rows[0] || {};
+			if (rows) {
+				// 스케줄 기간 
+				const period = rows.period.split("_");
+				const startDate = this.getDate(period[0], 'period');
+				const endDate = this.getDate(period[1], 'period');
+				
+				
+			}
+			return rows;
+		} catch (err) {
+			logger(err.message, 'error');
+			logger(err.stack, 'error');
+			return {};
+		}
 	}
 };
 

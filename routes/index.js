@@ -19,10 +19,11 @@ router.route('/schedule')
 			if (!stamp) {
 				return res.send("<script>alert('잘못된 접근입니다.');yh.layer.close();</script>");
 			}
-
+			
 			const data = {
 				stamp,
-				colors : scheduler.getColors(),
+				colors : Object.keys(scheduler.getColors()),
+				date :  scheduler.getDate(stamp),
 			};
 			res.render("form", data);
 		})
@@ -41,4 +42,10 @@ router.route('/schedule')
 			
 		});
 		
+/** 스케줄 조회 */
+router.get("/schedule/view/:stamp/:color", async (req, res, next) => {
+	const data = await scheduler.getSchedule(req.params.stamp, req.params.color);
+	console.log(data);
+	return res.send("");
+});
 module.exports = router;
