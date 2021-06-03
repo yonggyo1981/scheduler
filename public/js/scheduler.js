@@ -1,4 +1,17 @@
+/**
+* 오늘 스케줄이 있는 경우 팝업 노출
+*
+*/
+function popupToday() {
+	if ($(".scheduler").hasClass("today")) { // 오늘 일정이 있는 경우
+		yh.layer.popup("/schedule/today", 400, 500);
+	}
+}
+
 $(function() {
+	// 오늘 스케줄 팝업 
+	popupToday();
+	
 	$(".scheduler .day .no").click(function() {
 		const stamp = $(this).closest(".day").data("stamp");
 		const url = "/schedule?stamp=" + stamp;
@@ -128,6 +141,16 @@ $(function() {
 					console.error(err);
 				});
 	});
+	
+	/** 오늘 스케줄 확인 처리 */
+	$("body").on("click", ".today_list .confirm", function() {
+		$list = $(".today_list input[type='checkbox']:checked");
+		const isChecked = [];
+		$.each($list, function() {
+			isChecked.push($(this).val());
+		});
+	});
+	
 	
 	 $.datepicker.setDefaults({
         dateFormat: 'yymmdd',

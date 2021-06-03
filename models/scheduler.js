@@ -168,7 +168,7 @@ const scheduler = {
 		const period = startStamp + "_" + endStamp;
 		
 		/** 이미 선점된 스케줄이 있으면 등록,수정 불가 */
-		const isExists = await this.checkColor(period, params.color);
+		const isExists = await this.checkColor(period, params.color, params.prevColor);
 		if (isExists) 
 			return false;
 		
@@ -359,13 +359,18 @@ const scheduler = {
 	* 스케줄 색상 선점여부 체크
 	*
 	*/
-	checkColor : async function(period, color) {
+	checkColor : async function(period, color, prevColor) {
 		period = period.split("_");
 		const sDate = new Date(Number(period[0]));
 		const eDate = new Date(Number(period[1]));
 		
-		const sql = "SELECT COUNT(*) as cnt FROM schedule WHERE scheduleDate BETWEEN :sDate AND :eDate AND color = :color";
+		let sql = "SELECT COUNT(*) as cnt FROM schedule WHERE scheduleDate BETWEEN :sDate AND :eDate AND color = :color";
 		const replacements = { sDate, eDate, color };
+		
+		if (prevColor) {
+			sql += " AND color <> :prevColor";
+			replacements.prevColor = prevColor;
+		}
 		
 		const rows = await sequelize.query(sql, {
 			replacements, 

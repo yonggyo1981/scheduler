@@ -7,10 +7,10 @@ const router = express.Router();
 
 /** 스케줄 조회 */
 router.get('/', async (req, res, next) => {
-	const todaySchedules = await scheduler.getTodaySchedules();
-	console.log(todaySchedules);
+	
 	const data = await scheduler.getCalendar(req.query.year, req.query.month);
-	//console.log(data);
+	data.todaySchedules = await scheduler.getTodaySchedules();
+	
 	res.render('main', data);
 });
 
@@ -64,6 +64,12 @@ router.get("/schedule/:period/:color", async (req, res, next) => {
 	data.colors =  Object.keys(scheduler.getColors());
 	
 	return res.render("form", data);
+});
+
+/** 오늘 스케줄 확인 */
+router.get("/schedule/today", async (req, res, next) => {
+	const list = await scheduler.getTodaySchedules();
+	return res.render("today", { list });
 });
 
 module.exports = router;
