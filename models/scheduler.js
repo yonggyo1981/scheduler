@@ -144,14 +144,14 @@ const scheduler = {
 	*
 	*/
 	getColors : function() {
-		return [
-			{'pink' :"black"},
-			{'blue' : "white"},
-			{'skyblue' : "black"},
-			{'orange' : "white"},
-			{'red' : "white" },
-			{'gray' : "black"},
-		];
+		return {
+			pink :"black",
+			blue : "white",
+			skyblue : "black",
+			orange : "white",
+			red : "white",
+			gray : "black",
+		}
 	},
 	/**
 	* 스케줄 추가 
