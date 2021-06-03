@@ -47,7 +47,6 @@ $(function() {
 		const period = $obj.data("period");
 		const color = $obj.data("color");
 		const url = `/schedule/${period}/${color}`;
-		console.log(url);
 		yh.layer.popup(url, 400, 500);
 	});
 	
