@@ -321,6 +321,48 @@ const scheduler = {
 		
 		return data;
 	},
+	/**
+	* 색상변경 처리 
+	*
+	*/
+	changeColor : async function(period, prevColor, color) {
+		try {
+			const isExsist = await this.checkColor(period, color);
+			if (isExists)
+				return false;
+			
+			const sql = `UPDATE schedule 
+									SET 
+										color = :color 
+									WHERE 
+										period = :period AND color = :prevColor`;
+			const replacements = { color, period, prevColor };
+			
+			await sequelize.query(sql, {
+				replacements,
+				type : QueryTypes.UPDATE,
+			});
+			
+			return true;
+		} catch (err) {
+			logger(err.message, 'error');
+			logger(err.stack, 'error');
+			return false;
+		}
+	},
+	/**
+	* 스케줄 색상 선점여부 체크
+	*
+	*/
+	checkColor : async function(period, color) {
+		const sql = "SELECT COUNT(*) as cnt FROM schedule WHERE period = ? AND color = ?";
+		const rows = await sequelize.query(sql, {
+			replacements : [period, color],
+			type : QueryTypes.SELECT,
+		});
+		
+		return rows[0].cnt > 0;
+	},
 };
 
 

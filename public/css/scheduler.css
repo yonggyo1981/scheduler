@@ -1,4 +1,6 @@
-.scheduler { width: 1000px; margin: 30px auto;  }
+.scheduler { width: 1000px; margin: 30px auto; position: relative; }
+.scheduler .add_schedule { position: absolute; right: 0; padding: 10px 20px; border-radius: 7px; background-color: #d5d5d5; font-size: 14px; cursor: pointer; }
+
 .scheduler .nav { margin-bottom: 25px; }
 .scheduler .nav .month { font-size: 40px; font-weight: 500; margin-right: 10px; }
 .scheduler .nav .year { font-size: 15px; }
@@ -22,6 +24,7 @@
 .scheduler .days .day .no { padding: 5px; font-size: 12px; cursor: pointer; }
 
 .scheduler .schedule { height: 22px; padding: 0 10px; text-align: center; line-height: 22px; font-size: 12px; cursor: pointer; }
+
 
 
 /* form.html */

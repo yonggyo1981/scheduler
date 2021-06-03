@@ -93,6 +93,30 @@ $(function() {
 			});
 	});
 	
+	/** 스케줄 색상 변경 */
+	$("body").on("click", ".schedule_view input[type='radio']", function() {
+		$obj = $(this).closest(".schedule_view");
+		const color = $(this).val();
+		const period = $obj.data("period");
+		const prevColor = $obj.data("color");
+		if (color == prevColor)  // 색상이 다른 경우만 처리 
+			return;
+		
+		const params = { 
+			color : color, 
+			period : period,
+			prevColor : prevColor,
+		};
+		
+		axios.patch("/schedule", params)
+				.then(function(res) {
+					console.log(res);
+				})
+				.catch(function(err) {
+					console.error(err);
+				});
+	});
+	
 	 $.datepicker.setDefaults({
         dateFormat: 'yymmdd',
         prevText: '이전 달',

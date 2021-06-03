@@ -28,15 +28,17 @@ router.route('/schedule')
 			};
 			res.render("form", data);
 		})
-		/** 스케줄 등록 */
+		/** 스케줄 등록, 수정 */
 		.post(validator, async (req, res, next) => {
 			const result = await scheduler.add(req.body);
 		
 			return res.json({success: result})
 		})
-		/** 스케줄 수정 */
-		.patch((req, res, next) => {
+		/** 스케줄 색상 수정 */
+		.patch(async (req, res, next) => {
+			const result = await scheduler.changeColor(req.body.period, req.body.prevColor, req.body.color);
 			
+			return res.send("");
 		})
 		/** 스케줄 삭제 */
 		.delete(async (req, res, next) => {
