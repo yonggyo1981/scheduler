@@ -110,7 +110,11 @@ $(function() {
 		
 		axios.patch("/schedule", params)
 				.then(function(res) {
-					console.log(res);
+					if (res.data.success) { // 성공 
+						location.reload();
+					} else { // 실패 
+						alert("스케줄 색상 변경 실패하였습니다.");
+					}
 				})
 				.catch(function(err) {
 					console.error(err);

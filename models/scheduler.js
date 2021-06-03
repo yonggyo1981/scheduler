@@ -359,7 +359,7 @@ const scheduler = {
 		const sDate = new Date(Number(period[0]));
 		const eDate = new Date(Number(period[1]));
 		
-		const sql = "SELECT COUNT(*) as cnt FROM schedule WHERE scheduleDate BETWEEN :sDate AND :edate AND color = :color";
+		const sql = "SELECT COUNT(*) as cnt FROM schedule WHERE scheduleDate BETWEEN :sDate AND :eDate AND color = :color";
 		const replacements = { sDate, eDate, color };
 		
 		const rows = await sequelize.query(sql, {
