@@ -167,8 +167,13 @@ const scheduler = {
 		const step = 60 * 60 * 24 * 1000;
 		const period = startStamp + "_" + endStamp;
 		
+		/** 이미 선점된 스케줄이 있으면 등록,수정 불가 */
+		const isExists = await this.checkColor(period, params.color);
+		if (isExists) 
+			return false;
+		
 		try {
-			if (params.prevColor) {
+			if (params.prevColor) {				
 				const sql = "DELETE FROM schedule WHERE period = :period AND color = :color";
 				await sequelize.query(sql, {
 					replacements : { period : params.prevPeriod, color: params.prevColor },
