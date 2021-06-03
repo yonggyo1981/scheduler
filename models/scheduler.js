@@ -65,7 +65,7 @@ const scheduler = {
 		
 		/** 스케줄 조회 S */
 		const schedules= await this.get(days[0].object, days[days.length - 1].object);
-		const colors = this.getColors();
+		const colors = this.getColors().keys();
 		days.forEach((v, i, _days) => {
 			let isContinue = true;
 			if (i >= 35) {
@@ -85,6 +85,7 @@ const scheduler = {
 				});
 				
 				_days[i].schedules = schedule;
+				console.log(schedule);
 			}
 		});
 		/** 스케줄 조회 E */
@@ -108,9 +109,9 @@ const scheduler = {
 			nextMonth++;
 		}
 		
-		
 		const yoilsEn = this.getYoils('en');
-		return { days, year, month, yoilsEn, prevYear, prevMonth, nextYear, nextMonth };
+		const fontColor = this.getColors();
+		return { days, year, month, yoilsEn, prevYear, prevMonth, nextYear, nextMonth, colors, fontColor };
 	},
 	/**
 	* 현재 요일(일~토)
@@ -144,12 +145,12 @@ const scheduler = {
 	*/
 	getColors : function() {
 		return [
-			'pink',
-			'blue',
-			'skyblue',
-			'orange',
-			'red',
-			'gray',
+			{'pink' :"black"},
+			{'blue' : "white"},
+			{'skyblue' : "black"},
+			{'orange' : "white"},
+			{'red' : "white" },
+			{'gray' : "black"},
 		];
 	},
 	/**

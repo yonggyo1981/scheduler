@@ -21,6 +21,7 @@
 .scheduler .days li:nth-child(7n+1) { border-left: 0; }
 .scheduler .days .day .no { padding: 5px; font-size: 12px; }
 
+.scheduler .schedule { height: 22px; padding: 0 10px; text-align: center; line-height: 22px; font-size: 12px; }
 
 
 /* form.html */
