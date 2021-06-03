@@ -61,21 +61,37 @@ const scheduler = {
 			});
 		} // endfor 
 		
-		if (nextMonthDays >= 7) {
-			days.forEach((v, i, _days) => {
-				if (i >= 35) {
-					delete _days[i];
-				}
-			});
-			
-			days.length = 35;
-		}
+		
 		
 		/** 스케줄 조회 S */
-		const schedules = await this.get(days[0].object, days[days.length - 1].object);
-		
+		const schedules= await this.get(days[0].object, days[days.length - 1].object);
+		const colors = this.getColors();
+		days.forEach((v, i, _days) => {
+			let isContinue = true;
+			if (i >= 35) {
+				if (nextMonthDays >= 7) {
+					delete _days[i];
+					isContinue = false;
+				}
+			}
+			
+			if (isContinue) {
+				const date = v.date.replace(/\./g, "");
+				const schedule = {};
+				colors.forEach((color) => {
+					const cl = color.replace(/#/g, "");
+					const key = "S" + date + "_" + cl;
+					schedule[cl] = schedules[key]?schedules[key]:[];
+				});
+				
+				_days[i].schedules = schedule;
+			}
+		});
 		/** 스케줄 조회 E */
 		
+		if (nextMonthDays >= 7) {	
+			days.length = 35;
+		}
 		
 		let nextYear = year, prevYear = year;
 		let nextMonth = month, prevMonth = month;
