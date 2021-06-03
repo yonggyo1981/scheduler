@@ -15,12 +15,22 @@ $(function() {
 	
 	/** 스케줄 삭제 */
 	$("body").on("click", ".schedule_view .delete", function() {
-		const period = $(this).closest(".schedule_view").data("period");
-		const url = "/schedule",
+		$obj = $(this).closest(".schedule_view")
+		const period = $obj.data("period");
+		const color = $obj.data("color");
+		const url = "/schedule";
+
+		const formData = new FormData();
+		formData.period = period;
+		formData.color = color;
 		
-		axios.delete(url)
+		axios.delete(url, { params : formData })
 			.then(function(res) {
-				console.log(res);
+				if (res.success) { // 삭제 성공 
+					location.reload();
+				} else { // 삭제 실패 
+					alert("삭제 실패");
+				}
 			})
 			.catch(function(err) {
 				console.error(err);

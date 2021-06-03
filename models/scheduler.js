@@ -263,7 +263,29 @@ const scheduler = {
 			logger(err.stack, 'error');
 			return {};
 		}
-	}
+	},
+	/**
+	* 스케줄 삭제 
+	*
+	*/
+	delete : async function (period, color) {
+		if (!period || !color) 
+			return false;
+		
+		try {
+			const sql = "DELETE FROM schedule WHERE period = ? AND color = ?";
+			await sequelize.query(sql, {
+				replacements : [period, color],
+				type : QueryType.DELETE,
+			});
+		
+			return true;
+		} catch (err) {
+			logger(err.message, 'error');
+			logger(err.stack, 'error');
+			return false;
+		}
+	},
 };
 
 

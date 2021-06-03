@@ -39,8 +39,10 @@ router.route('/schedule')
 			
 		})
 		/** 스케줄 삭제 */
-		.delete((req, res, next) => {
+		.delete(async (req, res, next) => {
+			const result = await scheduler.delete(req.query.period, req.query.color);
 			
+			return res.json({success : result});
 		});
 		
 /** 스케줄 조회 */
