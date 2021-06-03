@@ -85,7 +85,6 @@ const scheduler = {
 				});
 				
 				_days[i].schedules = schedule;
-				console.log(schedule);
 			}
 		});
 		/** 스케줄 조회 E */

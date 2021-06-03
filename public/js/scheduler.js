@@ -1,6 +1,6 @@
 $(function() {
 	$(".scheduler .day .no").click(function() {
-		const stamp = $(this).data("stamp");
+		const stamp = $(this).closest(".day").data("stamp");
 		const url = "/schedule?stamp=" + stamp;
 		yh.layer.popup(url, 400, 500);
 	});
@@ -10,6 +10,7 @@ $(function() {
 		const stamp = $(this).closest(".day").data("stamp");
 		const color = $(this).data("color");
 		url = `/schedule/view/${stamp}/${color}`;
+		console.log(url);
 		yh.layer.popup(url, 400, 350);
 	});
 	
