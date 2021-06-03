@@ -15,6 +15,10 @@ $(function() {
 	
 	/** 스케줄 삭제 */
 	$("body").on("click", ".schedule_view .delete", function() {
+		if (!confirm('정말 삭제하시겠습니까?')) {
+			return;
+		}
+		
 		$obj = $(this).closest(".schedule_view")
 		const period = $obj.data("period");
 		const color = $obj.data("color");
@@ -26,7 +30,7 @@ $(function() {
 		
 		axios.delete(url, { params : formData })
 			.then(function(res) {
-				if (res.success) { // 삭제 성공 
+				if (res.data.success) { // 삭제 성공 
 					location.reload();
 				} else { // 삭제 실패 
 					alert("삭제 실패");
@@ -36,6 +40,16 @@ $(function() {
 				console.error(err);
 			});
 	});
+	
+	/** 스케줄 수정 */
+	$("body").on("click", ".schedule_view .modify", function() {
+		$obj = $(this).closest(".schedule_view");
+		const period = $obj.data("period");
+		const color = $obj.data("color");
+		const url = `/schedule/${period}/${color}`;
+		yh.layer.popup(url, 400, 500);
+	});
+	
 	
 	/** 스케줄 저장 */
 	$("body").on("click", "#frmSchedule .save", function() {

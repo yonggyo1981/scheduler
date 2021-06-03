@@ -44,7 +44,7 @@ router.route('/schedule')
 			
 			return res.json({success : result});
 		});
-		
+
 /** 스케줄 조회 */
 router.get("/schedule/view/:stamp/:color", async (req, res, next) => {
 	const data = await scheduler.getSchedule(req.params.stamp, req.params.color);
@@ -52,4 +52,19 @@ router.get("/schedule/view/:stamp/:color", async (req, res, next) => {
 	
 	return res.render("view", data);
 });
+
+/** 스케줄 수정 */
+router.get("/schedule/:period/:color", async (req, res, next) => {
+	
+	let date = "";
+	let stamp = 0;
+	const data = {
+		stamp,
+		colors : Object.keys(scheduler.getColors()),
+		date,
+	};
+	
+	return res.render("form", data);
+});
+
 module.exports = router;

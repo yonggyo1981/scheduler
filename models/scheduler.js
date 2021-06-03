@@ -276,7 +276,7 @@ const scheduler = {
 			const sql = "DELETE FROM schedule WHERE period = ? AND color = ?";
 			await sequelize.query(sql, {
 				replacements : [period, color],
-				type : QueryType.DELETE,
+				type : QueryTypes.DELETE,
 			});
 		
 			return true;
