@@ -7,6 +7,8 @@ const router = express.Router();
 
 /** 스케줄 조회 */
 router.get('/', async (req, res, next) => {
+	const todaySchedules = await scheduler.getTodaySchedules();
+	console.log(todaySchedules);
 	const data = await scheduler.getCalendar(req.query.year, req.query.month);
 	//console.log(data);
 	res.render('main', data);

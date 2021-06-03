@@ -89,7 +89,11 @@ $(function() {
 				if (res.data.success) {
 					location.reload();
 				} else {
-					alert("스케줄 등록 실패 하였습니다.");
+					if (res.data.message) {
+						alert(res.data.message);
+					} else {
+						alert("스케줄 등록 실패 하였습니다.");
+					}
 				}
 			})
 			.catch(function(err) {

@@ -3,9 +3,11 @@ CREATE TABLE `schedule` (
 	`color` VARCHAR(16) NOT NULL COMMENT '일정 구분 색상' COLLATE 'utf8_general_ci',
 	`period` VARCHAR(50) NOT NULL COMMENT '일정 기간' COLLATE 'utf8_general_ci',
 	`title` VARCHAR(60) NOT NULL DEFAULT '' COMMENT '일정 제목' COLLATE 'utf8_general_ci',
+	`isChecked` TINYINT(1) NULL DEFAULT '0' COMMENT '일정 확인여부',
 	`regDt` DATETIME NULL DEFAULT current_timestamp(),
 	PRIMARY KEY (`scheduleDate`, `color`) USING BTREE,
-	INDEX `period` (`period`) USING BTREE
+	INDEX `period` (`period`) USING BTREE,
+	INDEX `isChecked` (`isChecked`) USING BTREE
 )
 COLLATE='utf8_general_ci'
 ENGINE=InnoDB

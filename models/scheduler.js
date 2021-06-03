@@ -374,6 +374,27 @@ const scheduler = {
 		
 		return rows[0].cnt > 0;
 	},
+	/**
+	* 오늘 스케줄 조회 
+	*
+	*/
+	getTodaySchedules : async function() {
+		try {
+			const date = new Date();
+			const scheduleDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+			const sql = "SELECT * FROM schedule WHERE scheduleDate = ? AND isChecked = 0";
+			const rows = await sequelize.query(sql, {
+				replacements : [scheduleDate],
+				type : QueryTypes.SELECT,
+			});
+			
+			return rows;
+		} catch(err) {
+			logger(err.message, 'error');
+			logger(err.stack, 'error');
+			return [];
+		}
+	},
 };
 
 
